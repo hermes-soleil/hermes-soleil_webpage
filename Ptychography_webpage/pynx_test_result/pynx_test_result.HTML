@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style text="pynx_test_result.css"> </style>
+<head>
+
+<body>
+<h1> Output of pynx-test.py </h1>
+Modules running with pyCUDA show error while with OpenCL is working. Highlighted texts are the ones related to ptychography and one can see that the "ptycho_runner_cxi_opencl" is "ok". All other "Fail" and "Error" messages are related to CUDA as it is not available.
+<pre>
+com-hermes@hermes17:~/Desktop/test-pynx/nanoscopium/nanorods$ pynx-test.py 
+test_cl_processing_unit_init (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_gpyfft_fft_1D (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_gpyfft_fft_2D (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_gpyfft_fft_2D_stacked (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_gpyfft_fft_3D (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_gpyfft_import (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_mako (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_opencl_device_available_gpu_speed (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_opencl_elementwise (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_opencl_gpu (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_opencl_reduction (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_processing_unit_select_gpu_cl (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_pyopencl (pynx.processing_unit.test.test_opencl.TestOpenCL) ... ok
+test_cu_processing_unit_init (pynx.processing_unit.test.test_cuda.TestCUDA) ... FAIL
+test_cuda_device_available_gpu_speed (pynx.processing_unit.test.test_cuda.TestCUDA) ... ok
+test_cuda_gpu_device (pynx.processing_unit.test.test_cuda.TestCUDA) ... ok
+test_cuda_processing_unit (pynx.processing_unit.test.test_cuda.TestCUDA) ... ERROR
+test_mako (pynx.processing_unit.test.test_cuda.TestCUDA) ... ok
+test_opencl_elementwise (pynx.processing_unit.test.test_cuda.TestCUDA) ... ERROR
+test_processing_unit_select_gpu_cu (pynx.processing_unit.test.test_cuda.TestCUDA) ... FAIL
+test_pycuda (pynx.processing_unit.test.test_cuda.TestCUDA) ... ok
+test_pycuda_fft_1D (pynx.processing_unit.test.test_cuda.TestCUDA) ... FAIL
+test_pycuda_fft_2D (pynx.processing_unit.test.test_cuda.TestCUDA) ... FAIL
+test_pycuda_fft_2D_stacked (pynx.processing_unit.test.test_cuda.TestCUDA) ... FAIL
+test_pycuda_fft_3D (pynx.processing_unit.test.test_cuda.TestCUDA) ... FAIL
+test_pycuda_reduction (pynx.processing_unit.test.test_cuda.TestCUDA) ... ERROR
+test_skcuda_fft_import (pynx.processing_unit.test.test_cuda.TestCUDA) ... FAIL
+test_make_cdi_cxi (pynx.cdi.test.test_cdi.TestCDI) ... ok
+test_make_cdi_npz (pynx.cdi.test.test_cdi.TestCDI) ... ok
+test_cdi_runner_id01_2d_cxi_cuda (pynx.cdi.runner.test.test_runner.TestCDIRunner) ... FAIL
+test_cdi_runner_id01_2d_cxi_liveplot_cuda (pynx.cdi.runner.test.test_runner.TestCDIRunner) ... skipped 'live plot tests skipped'
+test_cdi_runner_id01_2d_cxi_liveplot_opencl (pynx.cdi.runner.test.test_runner.TestCDIRunner) ... skipped 'live plot tests skipped'
+test_cdi_runner_id01_2d_cxi_opencl (pynx.cdi.runner.test.test_runner.TestCDIRunner) ... ok
+test_cdi_runner_id01_3d_cxi_cuda (pynx.cdi.runner.test.test_runner.TestCDIRunner) ... FAIL
+test_cdi_runner_id01_3d_cxi_liveplot_cuda (pynx.cdi.runner.test.test_runner.TestCDIRunner) ... skipped 'live plot tests skipped'
+test_cdi_runner_id01_3d_cxi_liveplot_opencl (pynx.cdi.runner.test.test_runner.TestCDIRunner) ... skipped 'live plot tests skipped'
+test_cdi_runner_id01_3d_cxi_opencl (pynx.cdi.runner.test.test_runner.TestCDIRunner) ...  ok
+<mark>test_make_ptycho_cxi (pynx.ptycho.test.test_ptycho.TestPtycho) ... Creating CXI file: /tmp/tmppvuhi7h3/tmpzpaxm_ce.cxi
+ok</mark>
+<mark>test_ptycho_runner_cxi_cuda (pynx.ptycho.runner.test.test_runner.TestPtychoRunner) ... Creating CXI file: /tmp/tmp2uo7nfwl/tmpa069zrqm.cxi
+FAIL</mark>
+<mark>test_ptycho_runner_cxi_liveplot_cuda (pynx.ptycho.runner.test.test_runner.TestPtychoRunner) ... skipped 'live plot tests skipped'</mark>
+<mark>test_ptycho_runner_cxi_liveplot_opencl (pynx.ptycho.runner.test.test_runner.TestPtychoRunner) ... skipped 'live plot tests skipped'</mark>
+<mark>test_ptycho_runner_cxi_opencl (pynx.ptycho.runner.test.test_runner.TestPtychoRunner) ... Creating CXI file: /tmp/tmp2uo7nfwl/tmppyaulpj1.cxi
+ok</mark>
+
+======================================================================
+ERROR: test_cuda_processing_unit (pynx.processing_unit.test.test_cuda.TestCUDA)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 68, in test_cuda_processing_unit
+    pu.init_cuda(gpu_name=None, verbose=False, test_fft=False)
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/cu_processing_unit.py", line 88, in init_cuda
+    self.cu_ctx = self.cu_device.make_context()
+AttributeError: 'NoneType' object has no attribute 'make_context'
+
+======================================================================
+ERROR: test_opencl_elementwise (pynx.processing_unit.test.test_cuda.TestCUDA)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pycuda/tools.py", line 426, in context_dependent_memoize
+    return ctx_dict[cur_ctx][args]
+KeyError: <pycuda._driver.Context object at 0x7f4dd8078ea0>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 95, in test_opencl_elementwise
+    cu_psi1.fill(np.float32(1))
+  File "/usr/lib/python3/dist-packages/pycuda/gpuarray.py", line 549, in fill
+    func = elementwise.get_fill_kernel(self.dtype)
+  File "<decorator-gen-13>", line 2, in get_fill_kernel
+  File "/usr/lib/python3/dist-packages/pycuda/tools.py", line 430, in context_dependent_memoize
+    result = func(*args)
+  File "/usr/lib/python3/dist-packages/pycuda/elementwise.py", line 496, in get_fill_kernel
+    "fill")
+  File "/usr/lib/python3/dist-packages/pycuda/elementwise.py", line 161, in get_elwise_kernel
+    arguments, operation, name, keep, options, **kwargs)
+  File "/usr/lib/python3/dist-packages/pycuda/elementwise.py", line 147, in get_elwise_kernel_and_types
+    keep, options, **kwargs)
+  File "/usr/lib/python3/dist-packages/pycuda/elementwise.py", line 75, in get_elwise_module
+    options=options, keep=keep)
+  File "/usr/lib/python3/dist-packages/pycuda/compiler.py", line 291, in __init__
+    arch, code, cache_dir, include_dirs)
+  File "/usr/lib/python3/dist-packages/pycuda/compiler.py", line 254, in compile
+    return compile_plain(source, options, keep, nvcc, cache_dir, target)
+  File "/usr/lib/python3/dist-packages/pycuda/compiler.py", line 78, in compile_plain
+    checksum.update(preprocess_source(source, options, nvcc).encode("utf-8"))
+  File "/usr/lib/python3/dist-packages/pycuda/compiler.py", line 55, in preprocess_source
+    cmdline, stderr=stderr)
+pycuda.driver.CompileError: nvcc preprocessing of /tmp/tmp0yrielqz.cu failed
+[command: nvcc --preprocess -arch sm_75 -I/usr/lib/python3/dist-packages/pycuda/cuda /tmp/tmp0yrielqz.cu --compiler-options -P]
+[stderr:
+b"nvcc fatal   : Value 'sm_75' is not defined for option 'gpu-architecture'\n"]
+
+======================================================================
+ERROR: test_pycuda_reduction (pynx.processing_unit.test.test_cuda.TestCUDA)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pycuda/tools.py", line 426, in context_dependent_memoize
+    return ctx_dict[cur_ctx][args]
+KeyError: <pycuda._driver.Context object at 0x7f4dd80ae9d0>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 80, in test_pycuda_reduction
+    cu_psi.fill(np.float32(1))
+  File "/usr/lib/python3/dist-packages/pycuda/gpuarray.py", line 549, in fill
+    func = elementwise.get_fill_kernel(self.dtype)
+  File "<decorator-gen-13>", line 2, in get_fill_kernel
+  File "/usr/lib/python3/dist-packages/pycuda/tools.py", line 430, in context_dependent_memoize
+    result = func(*args)
+  File "/usr/lib/python3/dist-packages/pycuda/elementwise.py", line 496, in get_fill_kernel
+    "fill")
+  File "/usr/lib/python3/dist-packages/pycuda/elementwise.py", line 161, in get_elwise_kernel
+    arguments, operation, name, keep, options, **kwargs)
+  File "/usr/lib/python3/dist-packages/pycuda/elementwise.py", line 147, in get_elwise_kernel_and_types
+    keep, options, **kwargs)
+  File "/usr/lib/python3/dist-packages/pycuda/elementwise.py", line 75, in get_elwise_module
+    options=options, keep=keep)
+  File "/usr/lib/python3/dist-packages/pycuda/compiler.py", line 291, in __init__
+    arch, code, cache_dir, include_dirs)
+  File "/usr/lib/python3/dist-packages/pycuda/compiler.py", line 254, in compile
+    return compile_plain(source, options, keep, nvcc, cache_dir, target)
+  File "/usr/lib/python3/dist-packages/pycuda/compiler.py", line 78, in compile_plain
+    checksum.update(preprocess_source(source, options, nvcc).encode("utf-8"))
+  File "/usr/lib/python3/dist-packages/pycuda/compiler.py", line 55, in preprocess_source
+    cmdline, stderr=stderr)
+pycuda.driver.CompileError: nvcc preprocessing of /tmp/tmpkh1xajyf.cu failed
+[command: nvcc --preprocess -arch sm_75 -I/usr/lib/python3/dist-packages/pycuda/cuda /tmp/tmpkh1xajyf.cu --compiler-options -P]
+[stderr:
+b"nvcc fatal   : Value 'sm_75' is not defined for option 'gpu-architecture'\n"]
+
+======================================================================
+FAIL: test_cu_processing_unit_init (pynx.processing_unit.test.test_cuda.TestCUDA)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 240, in test_cu_processing_unit_init
+    self.assertTrue(ok, msg=msg)
+AssertionError: False is not true : Testing pynx.processing_unit.cu_processing_unit.CUProcessingUnit.init_cuda
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 234, in test_cu_processing_unit_init
+    u.init_cuda(fft_size=(32, 64, 64), verbose=False)
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/cu_processing_unit.py", line 88, in init_cuda
+    self.cu_ctx = self.cu_device.make_context()
+AttributeError: 'NoneType' object has no attribute 'make_context'
+
+
+======================================================================
+FAIL: test_processing_unit_select_gpu_cu (pynx.processing_unit.test.test_cuda.TestCUDA)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 255, in test_processing_unit_select_gpu_cu
+    self.assertTrue(ok, msg=msg)
+AssertionError: False is not true : Testing pynx.processing_unit.ProcessingUnit.select_gpu(language='cuda')
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 249, in test_processing_unit_select_gpu_cu
+    u.select_gpu(language='cuda', verbose=False)
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/__init__.py", line 263, in select_gpu
+    raise Exception(s)
+Exception: Desired GPU language is CUDA, but no device found !
+
+
+======================================================================
+FAIL: test_pycuda_fft_1D (pynx.processing_unit.test.test_cuda.TestCUDA)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 130, in test_pycuda_fft_1D
+    self.assertTrue(fft_ok, msg=msg)
+AssertionError: False is not true : Testing 1D cufft execution
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 117, in test_pycuda_fft_1D
+    import skcuda.fft as cu_fft
+ModuleNotFoundError: No module named 'skcuda'
+
+
+======================================================================
+FAIL: test_pycuda_fft_2D (pynx.processing_unit.test.test_cuda.TestCUDA)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 157, in test_pycuda_fft_2D
+    self.assertTrue(fft_ok, msg=msg)
+AssertionError: False is not true : Testing 2D cufft execution
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 144, in test_pycuda_fft_2D
+    import skcuda.fft as cu_fft
+ModuleNotFoundError: No module named 'skcuda'
+
+
+======================================================================
+FAIL: test_pycuda_fft_2D_stacked (pynx.processing_unit.test.test_cuda.TestCUDA)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 184, in test_pycuda_fft_2D_stacked
+    self.assertTrue(fft_ok, msg=msg)
+AssertionError: False is not true : Testing 3D cufft execution
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 171, in test_pycuda_fft_2D_stacked
+    import skcuda.fft as cu_fft
+ModuleNotFoundError: No module named 'skcuda'
+
+
+======================================================================
+FAIL: test_pycuda_fft_3D (pynx.processing_unit.test.test_cuda.TestCUDA)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 212, in test_pycuda_fft_3D
+    self.assertTrue(fft_ok, msg=msg)
+AssertionError: False is not true : Testing 3D cufft execution
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 199, in test_pycuda_fft_3D
+    import skcuda.fft as cu_fft
+ModuleNotFoundError: No module named 'skcuda'
+
+
+======================================================================
+FAIL: test_skcuda_fft_import (pynx.processing_unit.test.test_cuda.TestCUDA)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 54, in test_skcuda_fft_import
+    self.assertTrue(import_ok, msg=msg)
+AssertionError: False is not true : Testing for skcuda.fft (needed for CUDA FFT calculations)
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/test/test_cuda.py", line 49, in test_skcuda_fft_import
+    import skcuda.fft as cu_fft
+ModuleNotFoundError: No module named 'skcuda'
+
+
+======================================================================
+FAIL: test_cdi_runner_id01_2d_cxi_cuda (pynx.cdi.runner.test.test_runner.TestCDIRunner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/cdi/runner/test/test_runner.py", line 139, in test_cdi_runner_id01_2d_cxi_cuda
+    self.assertFalse(res, msg=stderr.decode())
+AssertionError: 1 is not false : Traceback (most recent call last):
+  File "/usr/bin/pynx-id01cdi.py", line 12, in <module>
+    from pynx.cdi.runner import helptext_generic, CDIRunnerException
+  File "/usr/lib/python3/dist-packages/pynx/cdi/__init__.py", line 9, in <module>
+    from .operator import *
+  File "/usr/lib/python3/dist-packages/pynx/cdi/operator.py", line 8, in <module>
+    from ..processing_unit import has_cuda, has_opencl
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/__init__.py", line 24, in <module>
+    raise ProcessingUnitException('PyNX processing unit: CUDA language is selected from the PYNX_PU '
+pynx.processing_unit.ProcessingUnitException: PyNX processing unit: CUDA language is selected from the PYNX_PU environment variable, but CUDA is not available !
+
+
+======================================================================
+FAIL: test_cdi_runner_id01_3d_cxi_cuda (pynx.cdi.runner.test.test_runner.TestCDIRunner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/cdi/runner/test/test_runner.py", line 92, in test_cdi_runner_id01_3d_cxi_cuda
+    self.assertFalse(res, msg=stderr.decode())
+AssertionError: 1 is not false : Traceback (most recent call last):
+  File "/usr/bin/pynx-id01cdi.py", line 12, in <module>
+    from pynx.cdi.runner import helptext_generic, CDIRunnerException
+  File "/usr/lib/python3/dist-packages/pynx/cdi/__init__.py", line 9, in <module>
+    from .operator import *
+  File "/usr/lib/python3/dist-packages/pynx/cdi/operator.py", line 8, in <module>
+    from ..processing_unit import has_cuda, has_opencl
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/__init__.py", line 24, in <module>
+    raise ProcessingUnitException('PyNX processing unit: CUDA language is selected from the PYNX_PU '
+pynx.processing_unit.ProcessingUnitException: PyNX processing unit: CUDA language is selected from the PYNX_PU environment variable, but CUDA is not available !
+
+
+======================================================================
+FAIL: test_ptycho_runner_cxi_cuda (pynx.ptycho.runner.test.test_runner.TestPtychoRunner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/pynx/ptycho/runner/test/test_runner.py", line 101, in test_ptycho_runner_cxi_cuda
+    self.assertFalse(res, msg=stderr.decode())
+AssertionError: 1 is not false : Traceback (most recent call last):
+  File "/usr/bin/pynx-cxipty.py", line 12, in <module>
+    from pynx.ptycho.runner import PtychoRunnerException, helptext_generic
+  File "/usr/lib/python3/dist-packages/pynx/ptycho/__init__.py", line 9, in <module>
+    from .operator import *
+  File "/usr/lib/python3/dist-packages/pynx/ptycho/operator.py", line 9, in <module>
+    from ..processing_unit import has_cuda, has_opencl
+  File "/usr/lib/python3/dist-packages/pynx/processing_unit/__init__.py", line 24, in <module>
+    raise ProcessingUnitException('PyNX processing unit: CUDA language is selected from the PYNX_PU '
+pynx.processing_unit.ProcessingUnitException: PyNX processing unit: CUDA language is selected from the PYNX_PU environment variable, but CUDA is not available !
+
+
+----------------------------------------------------------------------
+Ran 42 tests in 37.283s
+
+FAILED (failures=10, errors=3, skipped=6)
+-------------------------------------------------------------------
+PyCUDA ERROR: The context stack was not empty upon module cleanup.
+-------------------------------------------------------------------
+A context was still active when the context stack was being
+cleaned up. At this point in our execution, CUDA may already
+have been deinitialized, so there is no way we can finish
+cleanly. The program will be aborted now.
+Use Context.pop() to avoid this problem.
+-------------------------------------------------------------------
+Aborted
+</pre>
+</body>
+</html>

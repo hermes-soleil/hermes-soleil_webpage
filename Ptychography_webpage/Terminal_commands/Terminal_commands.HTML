@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Terminal_commands.css">
+</head>
+
+<body>
+
+<h1> List of useful terminal command related to ptychography </h1>
+<ol>
+<li> silx view flyscan_1219-0001.nxs: To view the .nxs or .hdf5 file like hdf viewer </li>
+<li> pynx-nanoscopiumpty.py data=flyscan_1219-0001.nxs probe=disc,1e-6 detectordistance=3.265 algorithm=DM**100 mask=mask.npz liveplot    ----- first code which worked without any error</li>
+
+<li>python3 pynx-HERMESpty.py data=si107_20191201_000001.nxs probe=disc,61e-9 detectordistance=65e-3 dark= "si107_20191201_dark_000001.nxs:/entry/scan_data/SI107_20191201_dark_image" algorithm=ML**100,DM**200,probe=1,DM**200,probe=1 liveplot saveplot  ----- first code worked for HERMES.py without any error</li>
+
+
+</ol>
+
+
+
+
+
+<h1> List of useful terminal command </h1>
+<ol>
+<li> setxkbmap us - for English keyboard, setxkbmap fr - for French keyboard </li>
+<li> To copy files/folder - type "mc" in th command line - in the gui you have two windows (when you open both the windows will have the same path, go to one of them and choose the necessary file/folder and press F5 to copy. Type "exit" when done.
+<li> mc - to copy paste files from location far far away that it is not worth typing in the terminal. Simply type mc in the terminal and a new GUI window opens with all instructions to copy from one directory to another. 
+</ol>
+
+
+
+
+
+</body>
+
+</html>  
