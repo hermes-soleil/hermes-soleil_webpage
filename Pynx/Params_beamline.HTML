@@ -1,0 +1,230 @@
+<!Doctype html>
+<html>
+<body>
+<pre>
+# Generic help text, to be completed with beamline/instrument-specific help text
+
+helptext_generic = """
+generic (not beamline-specific) command-line arguments: (all keywords are case-insensitive)
+    scan=56: scan number (e.g. in specfile) [mandatory, unless cxifile is used as input].
+             Alternatively a list or range of scans can be given:
+                scan=12,23,45 or scan="range(12,25)" (note the necessary quotes when using range)
+
+    maxframe=128: limit the total number of frames used to the first N
+                  [default=None, all frames are used]
+
+    maxsize=256: the frames are automatically cropped to the largest possible size while keeping 
+                 the center of gravity of diffraction in the frame center. Use this to limit the 
+                 maximum frame size, for tests or limiting memory use [default=512]
+
+    moduloframe=n1,n2: instead of using all sequential frames of the scan, only take one in n1.
+                       if n2"<"n1 is also given, then the frame numbers taken will be the n for which
+                       n % n1 == n2. This can be used to perform two reconstructions with half of 
+                       the frames, and then analyse the resolution using Fourier ring correlation.
+                       If both moduloframe and maxframe are given, the total number of frames taken 
+                       is still maxframe.
+                       [default: take all frames]
+
+    algorithm=ML**50,DM**100,probe=1: algorithm for the optimization: [default='ML**50,DM**100']
+    
+        The algorithm used is:
+        - divided in 'steps' separated by commas, e.g: ML**50,DM**100
+        - interpreted from right to left, as a mathematical operator to an object on the 
+          right-hand side
+        - should not contain any space, unless it is given between quotes ('')
+        
+        - the first type of commands can change basic parameters or perform some analysis:
+          - probe=1 or 0: activate or deactivate the probe optimisation (by default only the 
+            object is optimised)
+          - object=1 or 0: activate or deactivate the object optimisation
+          - background=1 or 0: activate or deactivate the background optimisation 
+            (only works with AP)
+          - nbprobe=3: change the number of modes for the probe (can go up or down)
+          - regularization=1e-4: setting the regularization parameter for the object, to penalize 
+                                 local variations in ML runs and smooth the solution
+          - obj_smooth=1.5 or probe_smooth=1.0: these parameters will partially smooth the object and probe inertia,
+            softening the resulting arrays. This applies to DM and AP algorithms.
+          - obj_inertia=0.01 or obj_probe=0.001: these parameters set the inertia of the object and/or probe update,
+            yielding more stable result. This applies to DM and AP algorithms.
+          - ortho: will perform orthogonalisation of the probe modes. The modes are sorted by 
+            decreasing intensity.
+          - analysis: perform an analysis of the probe (propagation, modes). Useful combined 
+            with 'saveplot' to save the analysis plots
+        
+        - the second type are operators which will be applied to the Ptycho object:
+          - AP: alternate projections. Slow but converging algorithm
+          - DM: difference map. Fast early convergence, oscillating after.
+          - ML: maximum likelihood conjugate gradient (Poisson-noise). Robust, converging,
+            for final optimization.
+          These operators can be combined mathematically, e.g.:
+          - DM**100: corresponds to 100 cycles of difference map
+          - ML**40*DM**100: 100 cycles of DM followed by 40 cycles of ML (note the order)
+
+
+        Example algorithms chains:
+          - algorithm=ML**40,DM**100,probe=1: activate probe optimisation, 
+            then 100 DM and 40 ML (quick)
+          - algorithm=ML**100,DM**200,nbprobe=3,ML**40,DM**100,probe=1,DM**100: first DM with 
+            object update only,  then 100 DM also updating the probe, then use 3 probe modes 
+            and do 100 DM followed by 40 ML
+          - algorithm=ML**100*AP**200*DM**200,probe=1: 200 DM then 200 AP then 100 ML (one step)
+          - algorithm='(ML**10*DM**20)**5,probe=1': 
+            repeat 5 times [20 cycles of DM followed by 5 cycles of ML]
+            (note the quotes necessary for the parenthesis)
+
+    nbrun=10: number of optimizations to perform [default=1]
+
+    run0=10: number for the first run (can be used to overwrite previous run results) 
+             [default: after previous results or 1]
+
+    liveplot: liveplot during optimization [default: no display]
+
+    saveplot: will save plot at the end of the optimization (png file) [default= not saved].
+              Optionally this can also specify if only the object phase should be plotted, e.g.:
+              saveplot=object_phase: will display the object phase
+              saveplot=object_rgba: will use RGBA to display both amplitude and phase.
+
+    saveprefix=ResultsScan%04d/Run%04d: prefix to save the optimized object and probe 
+              (as a .cxi or .npz file) and optionally image (png) [default='ResultsScan%04d/Run%04d']
+
+    output_format='cxi': choose the output format for the final object and support.
+                         Possible choices: 'cxi', 'npz'
+                         [Default='cxi']
+
+    save=all: either 'final' or 'all' this keyword will activate saving after each optimization 
+              step (ptycho, ML) of the algorithm in any given run [default=final]
+
+    load=Results0057/Run0001.cxi (or .npz): load object and probe from previous optimization. Note that the
+               object and probe will be scaled if the number of pixels is different for the probe.
+              [default: start from a random object, simulate probe]
+
+
+    loadprobe=Results0057/Run0001.npz (or .cxi): load only probe from previous optimization 
+                                       [default: simulate probe]
+
+    loadpixelsize=8.6e-9: specify the pixel size (in meters) from a loaded probe 
+                          (and possibly object). If the pixel size is different,
+                          the loaded arrays will be scaled to match the new pixel size.
+                          [default: when loading previous files, object/probe pixel size is 
+                          calculated from the size of the probe array, assuming same detector 
+                          distance and pixel size]
+
+    probe=focus,60e-6x200e-6,0.09: define the starting probe, either using:
+                                  focus,60e-6x200e-6,0.09: slits size (horizontal x vertical),
+                                                           focal distance (all in meters)
+                                  focus,200e-6,0.09: radius of the circular aperture, 
+                                                     focal distance (all in meters)
+                                  gaussian,100e-9x200e-9: gaussian type with horizontal x vertical
+                                                          FWHM, both given in meters
+                                  disc,100e-9: disc-shape, with diameter given in meters
+                                  [mandatory, ignored if 'load' or 'loadprobe' is used]
+
+    defocus=1e-6: defocused position (+: towards detector). The probe is propagated by this distance
+                  before being used. This is true both for calculated probes (using 'probe=...') 
+                  and for probes loaded from a previous file.
+
+    rotate=30: rotate the probe (either simulated or loaded) by X degrees [default: no rotation]
+
+    object=random,0.9,1,0,6: specify the original object values. The object will be initialised
+                             over the entire area using random values: random,0-1,0-6.28 : random 
+                             amplitudes between 0 and 1, random phases between 0 and 6.28.
+                             For high energy small-angle ptycho (i.e. high transmission), 
+                             recommended value is: random,0.9,1,0,0
+                             [default: random,0,1,0,6.28]
+
+    verbose=20: print evolution of llk (and display plot if 'liveplot' is set) every N cycle 
+                [default=50]
+
+    data2cxi: if set, the raw data will be saved in CXI format (http://cxidb.org/cxi.html), 
+              will all the required information for a ptychography experiment (energy, detector 
+              distance, scan number, translation axis are all required). if 'data2cxi=crop' 
+              is used, the data will be saved after centering and cropping (default is to save 
+              the raw data). If this keyword is present, the processing stops after exporting the data.
+
+    mask= or loadmask=mask.npy: the mask to be used for detector data, which should have the same 2D
+                       shape as the raw detector data.
+                       This should be a boolean or integer array with good pixels=0 and bad ones>0
+                       (values are expected to follow the CXI convention)
+                       Acceptable formats:
+                       - mask.npy, mask.npz (the first data array will be used)
+                       - mask.edf or mask.edf.gz (a single 2D array is expected)
+                       - "mask.h5:/entry_1/path/to/mask" hdf5 format with the full path to the 
+                         2D array. 'hdf5' is also accepted as extension.
+                       - 'maxipix': if this special name is entered, the masked pixels will be rows 
+                         and columns multiples of 258+/-3
+
+    roi=xmin,xmax,ymin,ymax: the region-of-interest to be used for actual inversion. The area is taken 
+                             with python conventions, i.e. pixels with indices xmin<= x "<"xmax and 
+                             ymin"<"= y "<" ymax.
+                             Additionally, the shape of the area must be square, and 
+                             n=xmax-xmin=ymax-ymin must also be a suitable integer number
+                             for OpenCL or CUDA FFT, i.e. it must be a multiple of 2 and the largest number in
+                             its prime factor decomposition must be less or equal to the largest value
+                             acceptable by clFFT (<=13 as of November 2016) or cuFFT (<=7).
+                             If n does not fulfill these constraints,
+                             it will be reduced using the largest possible integer smaller than n.
+                             This option supersedes 'maxsize' unless roi='auto'.
+                             Other possible values:
+                             - 'auto': automatically selects the roi from the center of mass 
+                                       and the maximum possible size. [default]
+                             - 'all' or 'full': use the entire, uncentered frames. Only useful for pre-processed
+                                      data. Cropping may still be performed to get a square and 
+                                      FFT-friendly size.
+
+    rebin=2: the experimental images can be rebinned (i.e. a group of n x n pixels is replaced by a
+             single one whose intensity is equal to the sum of all the pixels). This 'rebin' is 
+             performed last: the ROI, mask, background, pixel size should all correspond to 
+             full (non-rebinned) frames. 
+             [default: no rebin]
+
+    autocenter=0: by default, the object and probe are re-centered automatically after each 
+                  optimisation step, to avoid drifts. This can be used to deactivate this behaviour
+                  [default=True]
+    
+    center_probe_n, center_probe_max_shift: during DM, the probe can shift. The probe center of mass  will be checked
+                                            every center_probe_n cycles, and the object and probe position will be
+                                            corrected if the center deviates by more than center_probe_max_shift pixels.
+                                            This is ignored for near field ptycho.
+                                            [default: center_probe_n=5, center_probe_max_shift=5]
+    
+    dm_loop_obj_probe=3: during DM, when both object and probe are updated, it can be more stable to loop the object
+                         and probe update for a more stable optimisation, but slower. [default: 2]
+                  
+    detector_orientation=1,0,0: three flags which, if True, will do in this order: 
+                                array transpose (x/y exchange), flipud, fliplr [default: no change]
+                                The changes also apply to the mask.
+    
+    xy=y,x: order and expression to be used for the XY positions (e.g. '-x,y',...). Mathematical 
+            operations can also be used, e.g.: xy=0.5*x+0.732*y,0.732*x-0.5*y
+            [default: None- may be superseded in some scripts e.g. for ptypy]
+    
+    flatfield=flat.npy: the flatfield correction to be applied to the detector data. The array must
+                        have the same shape as the frames, which will be multiplied by this 
+                        correction.
+                        Acceptable formats:
+                        - flat.npy, flat.npz (the first data array will be used)
+                        - flat.edf or flat.edf.gz (a single 2D array is expected)
+                        - "flat.h5:/entry_1/path/to/flat" hdf5 format with the full path to the 
+                          2D array. 'hdf5' is also accepted as extension.
+                        - flat.mat: from a matlab file. The first array found is loaded
+                       [default: no flatfield correction is applied]
+    
+    dark=dark.npy: the dark correction to be subtracted from the detector data. The array must have 
+                       the same shape as the frames, which will be substracted by this correction.
+                       Acceptable formats:
+                       - dark.npy, dark.npz (the first data array will be used)
+                       - dark.edf or dark.edf.gz (a single 2D array is expected)
+                       - "dark.h5:/entry_1/path/to/dark" hdf5 format with the full path to the 
+                         2D array. 'hdf5' is also accepted as extension.
+                       - dark.mat: from a matlab file. The first array found is loaded
+                       [default: no dark correction is applied]
+    
+    orientation_round_robin: will test all possible combinations of xy and detector_orientation 
+                             to find the correct detector configuration.
+"""
+
+# This must be defined in in beamline/instrument-specific scripts
+# helptext_beamline = ""
+</pre>
+</body>
+</html>

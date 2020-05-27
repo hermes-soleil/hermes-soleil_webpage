@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1> Pre-Processing code for pynx reconstruction</h1>
+List of reconstruction codes<br>
+
+<ol>
+
+<li> Pre-process by entering only the .nxs data file (one or multiple)</li>
+<li> Pre-process by entering .nxs file of data and dark (one or multiple)</li>
+<li> Pre-process entire folder</li>
+<li> Pre-process and reconstruct one file (one or multiple)</li>
+<li> Pre-process and reconstruct entire folder </li>
+
+
+</ol>
+
+
+
+
+The document summarized the image processing and generation of the new <i>.cxi </i> file which will be used for the ptychography reconstruction using pynx at the HERMES beamline. By default and as of 25.02.2020, there are three files that are generated during the ptychography data acquisition: <br>
+<ol>
+<li> si_date_000001.nxs - with images of all the diffraction pattern (indicated in figure 1, where the red boxes are the region in the sample where diffraction pattern is imaged in the camera </li>
+<li> si_date_dark_000001.nxs - with images acquired with the X-rays (used to remove the background signal from the camera- example of the image can be found in <a href = ../pynx/pynx.HTML)</li>
+<li> Sample_Image_data_filename.hdf5 - contains the X and Y coordinates corresponding to the diffraction pattern.(refer figure 1)</li>
+</ol>
+<img src="Image_1.png" style="width:10%;height:10%;"><br>
+All these files are stored in the same folder as defined by the user during the beamtime, the folder name is usually the proposal number such as UP_XXXXX.
+
+
+
+</body>
+
+</html>
+
+
+
+
