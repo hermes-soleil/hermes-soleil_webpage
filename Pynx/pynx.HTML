@@ -7,26 +7,57 @@
 <body>
 <h1> Setting up Pynx at a new beamline </h1>
 
-Pynx can be installed by using "pip" command details on how to install can be found in <a href="http://ftp.esrf.fr/pub/scisoft/PyNX/doc/install.html"> link</a>. At Soleil pynx is installed by the scientific computing group please refer <a href = "../contact/Contact.HTML"> Contact </a>. Pynxs can use both CUDA and OpenCL, both are meant for same purpose to carry out parallel computation in GPU and CPU levels. PyCUDA is developed by NVIDIA, while OpenCL is standard open source library similar to OpenCV. For ptychographic reconstruction, having only the OpenCL modules would suffice. The workstation at HERMES have only OpenCL pakages with no CUDA or PyCUDA modules installed due to some errors during installation. Please <a href = "../contact/Contact.HTML"> Contact Federic </a> if CUDA libraries had to be installed. As soon as Pynx is installed, in the terminal run "pynx-test.py" (simply type the command and no need for "python" added in front). The test perfoms all the necessary unit test to activate and verify all the modules and packages available. The "pynx-test" performs unit test for all its operation such as for ptychography, coherant diffraction imaging or scattering, therefore during the testing please check the terminal for errors and all the necessary operations are working properly. The output of the test results can be found in the <a href =" ../pynx_test_result/pynx_test_result.HTML">link.</a><br>
+Pynx can be installed by using "pip" command, details on how to install can be found in <a href="http://ftp.esrf.fr/pub/scisoft/PyNX/doc/install.html"> link</a>. At Soleil pynx is installed by the scientific computing group please refer <a href = "../contact/Contact.HTML"> Contact </a>. Pynxs can use both CUDA and OpenCL, both are meant for same purpose to carry out parallel computation in GPU and CPU levels. PyCUDA is developed by NVIDIA, while OpenCL is standard open source library similar to OpenCV. For ptychographic reconstruction, having one of the two modules would suffice. The workstation at HERMES have only OpenCL pakages with no CUDA or PyCUDA modules installed due to some errors during installation. Please <a href = "../contact/Contact.HTML"> Contact Federic </a> if CUDA libraries had to be installed. As soon as Pynx is installed, in the terminal run "pynx-test.py" (simply type the command and no need for "python" added in front). The test perfoms all the necessary unit test to activate and verify all the modules and packages available. The "pynx-test" performs unit test for all its operation such as for ptychography, coherant diffraction imaging or scattering, therefore during the testing please check the terminal for errors and all the necessary operations are working properly. The output of the test results can be found in the <a href =" ../pynx_test_result/pynx_test_result.HTML">link.</a><br>
 <br>
-Pynx directories are stored inside the python dictionary ("/usr/lib/python3/dist-packages/") and the executables can be used without having the administration rights (root or super user), however in order to edit the python files it is only possible as a super user or root. If you have the root access please go to <a href="#configure_pynx">configure pynx</a>. If you dont have the root access, copy the pynx folder in "/usr/lib/python3/dist-packages/" to any local directory where you have permission to read and write after which follow the procedures in <a href="#configure pynx">configure pynx</a>. As of 31.01.2020 the pynx folder is stored in "/home/experiences/hermes/com-hermes/Desktop/test-pynx". 
+Pynx directories are stored inside the python dictionary ("/usr/lib/python3/dist-packages/") and the executables can be used without having the administration rights (root or super user), however in order to edit the python files it is only possible as a super user or root. If you have the root access please go to <a href="#configure_pynx">configure pynx</a>. If you dont have the root access, copy the pynx folder in "/usr/lib/python3/dist-packages/" to any local directory where you have permission to read and write after which follow the procedures in <a href="#configure pynx">configure pynx</a>. As of 02.06.2020 the pynx folder is stored in "/home/experiences/hermes/com-hermes/pynx-HERMES/pynx_v1/". 
 
 
 
 <h1> Configuring Pynx </h1> <a name="configure_pynx"></a>
-To run ptychography reconstruction there are two files that need to be configured depending on the beamline or the hdf5 files that is going to be used. The two files are the following: <br>
+To run ptychography reconstruction there are two files that need to be configured depending on the beamline or the preprocessed hdf5 files that is going to be used. The two files are the following: <br>
 <ol>
-<li>pynx-beamlin_namepty.py (e.g. pynx-nanoscopiumpty.py) - located in "/usr/lib/python3/dist-packages/pynx/ptycho/scripts"
+<li>pynx-beamlin_namepty.py (e.g. pynx-nanoscopiumpty.py) - default location of the source file in "/usr/lib/python3/dist-packages/pynx/ptycho/scripts", however at HERMES workstation it is located in "/home/experiences/hermes/com-hermes/pynx-HERMES/pynx_v1/pynx/ptycho/scripts"
 </li>
-<li> beamline.py (e.g. nanoscopium.py) - located in "/usr/lib/python3/dist-packages/pynx/ptycho/runner" </li>
-
-
+<li> beamline.py (e.g. nanoscopium.py) - default location in "/usr/lib/python3/dist-packages/pynx/ptycho/runner", at HERMES it is located in "/home/experiences/hermes/com-hermes/pynx-HERMES/pynx_v1/pynx/ptycho/runner"</li>
+<li> runner.py - This is not beamline specific, however it was also modified as per HERMES requirements, for example the default runner.py will not produce a .tif file of the reconstructed image, however these additional codes were added at HERMES for convinience</li>
+ 
+     
 </ol>
-All other files require no special attention. The HERMES.py and pynx-HERMESpty.py were configured on 28.01.2020 and it is available in the respecpective folders (not in /usr/lib/python3/dist-packages/pynx/ptycho/).
 
+All other files require no special attention. The HERMES.py and pynx-HERMESpty.py were first configured on 28.01.2020 and was constantly updated as of 02.06.2020.
+     
 <ul><li> Configuring beamlin.py/HERMES.py </li></ul>
-The python program has all the necessary scripts to extract the images and other data from the hdf/nxs/cxi file into a correct python "classes" with prefix or suffix "HERMES". These data are later used in the main code for the reconstruction. The first step to configure this file is to replace the beamline name to the local beamline name where needed, for example we took reference of nanoscopium.py file, therefore where ever we see nanoscopium it is replaced to HERMES. Inside HERMES.py there is a section with codes related to the input parameters from the experiment and for the reconstruction: it is given as "params_beamline = ". A detailed description of the parameters to be given can be found in <a href ="Params_beamline.HTML">link</a> and also in the python file "runner.py" located in "/usr/lib/python3/dist-packages/pynx/ptycho/runner".<br>
-Few important paramters to note are the following, these parameters can be defined in the command line or in the HERMES.py. NOTE: The paramters mentioned below are of the correct syntax and can be simply copy pasted in the HERMES.py file. <br>
+The python program has all the necessary scripts to extract the images and other data from the hdf/nxs/cxi file into a correct python "classes" with prefix or suffix "HERMES". These data are later used in the main code for the reconstruction. In addition to this all the reconstruction input parameters are also given in this file. The first step to configure this file is to replace the beamline name to the local beamline name where it is needed, for example we took reference of nanoscopium.py file, therefore where ever we see nanoscopium it is replaced to HERMES. The reconstruction requires the following data from the preprocessed file:<br>
+
+     <ol>
+          <li> Energy in keV</li>
+          <li> X and Y coordinates (in micrometers)</li>
+          <li> data of the image in 3D matrix </li>
+     </ol>
+ These values are given inside the class function "load_data". 
+
+Certain input paramters are needed for the reconstruction. In HERMES.py it is given as "params_beamline = ". A detailed description of the parameters to be given can be found in <a href ="Params_beamline.HTML">link</a> and also in the python file "runner.py". Although most of the reconstruction at HERMES can occur with the default values predeined in pynx certain parameters are necessary to be given here. Following are the parameters defined: <br>
+     
+     <ol>
+          <li> 'instrument':HERMES@SOLEIL - May not be necessary but this is added in the output files</li>
+          <li> 'detectordistance': 65e-3 - Although this can change by one or two mm during the experiment, it did not affect the reconstructed image, however, if you cannot get a good image, you can change this with the precise number obtained during the beamtmie.</li>
+          <li> 'pixelsize':11.6e-6 - this is the pixel size of the camera (REMEMBER-in case the images are binned, it is necessary to change the pixel size or the detector distance therefore try to avoid binning during the pre-processing as much as possible. At ALS they do this by the following: Pixel size of camera = (Real pixel size of camera * 2048[no of pixels]) / (binfactor * shape of the image [0])</li>
+          <li> 'objct':'random,0.95,1,0,0' - this is the preliminary guess of the object to be reconstructed. This value was suggested in pynx <a href ="Params_beamline.HTML">link</a>.</li>
+          <li>'detector_orientation':None - Although this is the vaue by default, in case the orientation need to be changed can be added here</li>
+          <li>'dm_loop_obj_probe':3 - this value updates and optimizes the object and the probe during differential mapping, it is slow but useful </li>
+          <li> 'verbose':50 - The lowest you can go is 20, the images will be updated after every 50 iteration going to less than 1 can result in a messy image. Default value is 50 and can be kept as such.</li>
+          <li> 'orientation_round_robin': False - Need to check what it is</li>
+          <li> 'obj_inertia':0.1 -</li>
+          <li> 'probe_inertia':0.01 - </li>
+     </ol>
+ These parameters were finalised after many trials therefore can be kept as such. 
+
+NOTE!!!!! - The HERMES.py works only for the preprocessed file from HERMES beamline, to carry out reconstruction from other pre-processed files use HERMES_editable.py. Make the necessary changes in the HERMES_editable.py and save it as HERMES.Py before running the reconstruction. MAKE SURE THAT THE ORIGIANL HERMES.PY IS NOT LOST WHEN MAKING SUCH CHANGES. Once done please rename the files back to normal.
+
+EXTRAS: In HERMES.py there is a possibility to add the probe mask which is normally used in SHARP. It is commented out, in case if it is needed it can be uncommented. The necessary code to use the mask in the reconstruction is already added in runner.py.
+     
+<!--     
+Few important paramters to pay attention are the following, these parameters can be defined in the command line or in the HERMES.py. NOTE: The paramters mentioned below are of the correct syntax and can be simply copy pasted in the HERMES.py file. <br>
 <ol>
 <li> 'nbrun': 1  - make sure that nbrun is not defined here, if defined do not put value more than 1. It defines the number of iteration after finishing a reconstruction. It finishes a reconstruction process then restarts if it is defined more than "1". (can be saved inside the "HERMES.py" or can be mentioned in the command line) </li>
 <li> 'verbose': 10 - Updates the images after every 10 "llk" iterations. Smaller the number many the update on the images and one can view live. It can be saved inside the "HERMES.py" or can be mentioned in the command line. NOTE: during DM algorithm, smaller value of verbose can mess the final image due to rescaling of the image during each iteration. Therefore it is better to keep the default as 50. </li>
@@ -35,33 +66,48 @@ Few important paramters to note are the following, these parameters can be defin
 <li> 'save': all (or Final) - this option will save the png file or image in the cxi file after each optimization defined by the "verbrose" mentioned above. The default value is "final". This can be defined in the command line when running the reconstruction. (can be saved inside the "HERMES.py" or can be mentioned in the command line)</li> 
 <li> 'algorithm': check <a href ="Params_beamline.HTML">link</a>. Start with Differential mapping and finish with alternative projection or maximum likelyhood.</li>
 </ol>
-Parameters that are constant ( IMPORTANT : TO BE CHANGED WHEN SETUP IS MODIFIED, NOTE: UNIT IN METERS)</li>
+  
+   
+Parameters which will not change ofter are added here (HERMES.py) else it should be added in the command line( IMPORTANT : TO BE CHANGED WHEN SETUP IS MODIFIED, NOTE: UNIT IN METERS). The following set of paramters are added after many trial and it is suitable for the preprocessed file at HERMES.
      <ol>
      <li> 'probe': disc,61e-9" : diameter of the focussed beam at HERMES beamline, to be changed according to the zoneplate used. (Works only when defined in the command line)</li>
-     <li> 'pixelsize': 11.6e-6" : pixel size of the camera. (can be saved inside the "HERMES.py" or can be mentioned in the command line)</li>
-     <li> 'detectordistance': 65e-3 : detector to sample distance. (NOTE: This has to changed in case the images are binned, can be saved inside the "HERMES.py" or can be mentioned in the command line).</li>
      <li> nbprobe = 3 : tries different probes. Higher the value more the memory required, with 512 by 512 pixels of the image nbprobe up to 4 was working
      <li> background = 1: also optimizes the background (made the image sharper)
      <li> <b>'padding': 50 - It is the pixel size of the empty box surrounding the image. There is a function defined pynx webpage but cannot implement this during the run, should be checked with Vincent.</b>
-
-
      </ol>
-Once configured store the file in the "pynx/ptycho/runner/" folder
+     
+-->   
 
 <ul><li>Configuring pynx-beamlinepty.py/ pynx-HERMESpty.py</li></ul>
 In this file replace the beamline name to the local beamline name where needed, for example we took reference of nanoscopium.py file, therefore where ever we see nanoscopium it is replaced to HERMES. After configuring store it in "pynx/ptycho/scripts" folder.<br>
 
-Once these two files are configured, from the command line one can simply copy paste "python3 pynx-HERMESpty.py data=some data.nxs probe=disc,61e-9 detectordistance=65e-3 dark= "dark.nxs:/entry/scan_data/path in cxi" algorithm=ML**100,DM**200,probe=1,DM**200,probe=1 liveplot saveplot 
-
+Once these two files are configured, the data is now ready for reconstruction. 
+<!--
+     from the command line one can simply copy paste "python3 pynx-HERMESpty.py data=some data.nxs probe=disc,61e-9 detectordistance=65e-3 dark= "dark.nxs:/entry/scan_data/path in cxi" algorithm=ML**100,DM**200,probe=1,DM**200,probe=1 liveplot saveplot 
+-->
+     
 <ul><li>Configuring runner.py</li></ul>
 
 The runner.py file is usually not touched. However following changes are made: <br>
 <ol>
+<li> Time stamp: The files that will be extracted will have the time and date of reconstruction as suffix. Added in line 293 </li>
+<li> Add probe mask: For SHARP, a probe mask is generated during the pre processing, therefore it is also adapted for pynx preprocessing, however we later found out from Vincent that it is not necessary as mask is only needed to cancel out unwanted pixels from the image. The codes are changed here to accpet the probe mask from HERMES.py, if it is not mentioned in HERMES.py these codes do not do anything or affect anything else, therefore it was left as such in case needed in the future.
 
-<li> To extract the images as tif file, additional codes are written in runner.py in lines 1485 - 1493 and 1541 - 1579 (it was marked as " edited by jaianth"). The extracted tif image is the object modulus (real + complex values displayed during the reconstruction if verbose value is not zero). After the reconstruction is complete, the final image produced by pynx (Normally a png image with the probe, reconstructed image and the reconstruction parameters is produced but a separate tif image or png is not produced) is stored in the directory where the python script runs ("ptycho/scripts"). The codes need to be modified to change the name given the image. As of 3.3.2020 only the object image is stored, the code will be modified to store the phase and probe images.</li>
 
 
-<li> To accept the mask array as numpy.ndarray instead of cxi/hdf file, this modification is done in 415 - 453 (maked as " edited by jaianth"). By this way the numpy.ndarry mask generated during the pre-processing can be directly inserted in the code without a need to create a .hdf or .npy file. During each preprocessing a new mak files is generated.</li> 
+<li> To accept the mask array as numpy.ndarray instead of cxi/hdf file, a modification is done in 420 (maked as " edited by jaianth"). By this way the numpy.ndarry mask generated during the pre-processing can be directly inserted in the code without a need to create a .hdf or .npy file. During each preprocessing a new mak files is generated.</li> 
+     
+The output file of pynx reconstruction consist of a cxi file and a png file, it is usually saved in a folder where pynx is located, however for the convinience of HERMES users we would like these files to be saved in the same user proposal folder where the pre processed files are located, therefore following changes were made. 
+
+     
+<li> Save CXI file in the same folder (user proposal folder where the preprocessed file is located). In line 1436 three lives were added, if you like to go back to pynx configuration just comment out these lines and uncomment the line below which says "filename = "</li>
+     
+     
+<li> Extract Object amplitude, object phase and probe amplitude as tif files: To extract the images as tif files, additional codes are written in runner.py from 1574 (it was marked as " edited by jaianth"). The amplitude, phase of the object and the amplitude of the probe will be saved as tif files. The images will have the name of the pre processed file with the reconstruction date and time as suffix. As prefix it will have Image_ampliture, Image_phase, Image_Probe,the files will be saved in folder from where the preprocessed file is taken from (user proposal folder).</li>
+  
+<li> Save summary as a png imge: The 
+     
+  
 </ol>
  
 
