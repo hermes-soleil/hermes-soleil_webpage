@@ -2,8 +2,6 @@
 <html>
 <body>
 <h1> Expert user Manual : Pre-Processing code + pynx reconstruction</h1>
-<h2> Pre process file</h2>
-
 
 The preprocessing files are located in "/home/experiences/hermes/com-hermes/pynx_HERMES/pynx_v1/Pre_Processing".  
 There are three main python codes which perform the pre processing for the pynx reconstruction. The three pynx scripts are the following (the files will be renamed better once we have a good work flow):
@@ -12,9 +10,27 @@ There are three main python codes which perform the pre processing for the pynx 
     <li> Very_simple_preprocess_NXS_v1.py - Probably never be used</li>
     <li> Select_nxs_files.py - Will be used when a large number of files need to be preprocessed for exmaple for ptycho spectra measurements<li>
   </ol>
-All these scripts can be executed from a common bash file "bash_filie_preprocessing.sh" depending on the user needs. In the bash file the user can also give in instructions to perform pynx reconstruction once the pre processing is over and the users can define list of files to pre-process and reconstruct. 
-   
-<b>STEP 1:</b> There are three files that are generated during the ptychography data acquisition, make sure you have all the three. All these files are stored in the same folder as defined by the user during the beamtime..
+These scripts can be executed from a common bash file "bash_filie_preprocessing.sh" or through the GUI depending "GUI_ptycho_v2.py". The users can choose one of these two options depending on their needs or their level of comfort. <br>
+Pros and cons of GUI and bash file:<br>
+GUI pros <br>
+  1. Easy to use<br>
+  2. Can create a list of files to be processed and let it run.<br>
+  3. Best option when you are pre-processing and/or reconstructing one file at a time.<br>
+GUI cons as of 03.06.2020 <br>
+  1. reconstructing the file as soon as preprocessing is over is not possible yet, but there is a seperate GUI window where the reconstruction can be carried out.<br>
+  2. reconstructing list of files to be reconstructed is not implemented yet.<br>
+  3. Gets hanged till the processes are over<br>
+    
+Bash file pros<br>
+  1. Easy to use.<br>
+  2. Can combine pre process and ptycho.<br>
+  3. Does not get struck, more robust.<br>
+  4. Can give in instructions to perform pynx reconstruction once the pre processing is over as well as define list of files to pre-process and reconstruct. <br>
+Bash file cons<br>
+  1. Should handle with care, make sure the syntax are maintained properly. <br>
+  2. Creating a list of files to be pre-processed or reconstructed can be messy but will work perfectly.<br>
+      
+<b>STEP 1:</b> There are three files that are generated during the ptychography data acquisition, make sure you have all the three. All these files are stored in the same folder as defined by the user during the beamtime.
  <br>
 <ol>
 <li> siNumber_date_000001.nxs - with images of all the diffraction pattern (indicated in figure 1, where the red boxes are the region in the sample where diffraction pattern is imaged in the camera </li>
@@ -23,7 +39,8 @@ All these scripts can be executed from a common bash file "bash_filie_preprocess
 </ol><br>
 <!--<img src="Image_1.png" style="width:10%;height:10%;"><br> -->
 
-<b> STEP 2: Configure the bash file</b><br>
+<b> STEP 2: Configure the bash file/GUI and run the script<b>
+  
 The bash script has the necessary text and locations to put the necessary parameters, when entered appropriately there will be no errors. Please pay attention to the spaces!!
   
 
