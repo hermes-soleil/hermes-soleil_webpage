@@ -5,7 +5,7 @@
 
 </head>
 <body>
-<h1> Setting up Pynx at a new beamline </h1>
+<h1> Setting up Pynx at HERMES </h1>
 
 Pynx can be installed by using "pip" command, details on how to install can be found in <a href="http://ftp.esrf.fr/pub/scisoft/PyNX/doc/install.html"> link</a>. At Soleil pynx is installed by the scientific computing group please refer <a href = "../contact/Contact.HTML"> Contact </a>. Pynxs can use both CUDA and OpenCL, both are meant for same purpose to carry out parallel computation in GPU and CPU levels. PyCUDA is developed by NVIDIA, while OpenCL is standard open source library similar to OpenCV. For ptychographic reconstruction, having one of the two modules would suffice. The workstation at HERMES have only OpenCL pakages with no CUDA or PyCUDA modules installed due to some errors during installation. Please <a href = "../contact/Contact.HTML"> Contact Federic </a> if CUDA libraries had to be installed. As soon as Pynx is installed, in the terminal run "pynx-test.py" (simply type the command and no need for "python" added in front). The test perfoms all the necessary unit test to activate and verify all the modules and packages available. The "pynx-test" performs unit test for all its operation such as for ptychography, coherant diffraction imaging or scattering, therefore during the testing please check the terminal for errors and all the necessary operations are working properly. The output of the test results can be found in the <a href =" ../pynx_test_result/pynx_test_result.HTML">link.</a><br>
 <br>
@@ -105,35 +105,36 @@ The output file of pynx reconstruction consist of a cxi file and a png file, it 
      
 <li> Extract Object amplitude, object phase and probe amplitude as tif files: To extract the images as tif files, additional codes are written in runner.py from 1574 (it was marked as " edited by jaianth"). The amplitude, phase of the object and the amplitude of the probe will be saved as tif files. The images will have the name of the pre processed file with the reconstruction date and time as suffix. As prefix it will have Image_ampliture, Image_phase, Image_Probe,the files will be saved in folder from where the preprocessed file is taken from (user proposal folder).</li>
   
-<li> Save summary as a png imge: The 
+<li> Save summary as a png imge: The results which are displayed during the reconstruction is also saved as pynx in the pynx folder, in line 1680 some codes were added to save the png file in the same folder where the pre processed file is located.
+ </li>
      
   
 </ol>
+NOTE: There will additional files names "latest.cxi" and "latest.png" these files will be overwritten with the latest reconstruction.
  
 
 <h1> Pynx at HERMES </h1>
 
 <h2> Pre-Prossing the data</h2>
-Cleaning of the data and creating new cxi file. The data will not be binned for the reconstruction in HERMES.
+The noises and background will be removed from the data and a new cxi file will be formatted which can be used by pynx. The data need not be binned during the pre-processing. The largest dimension which the computer memory can handle is about 800 * 800 pixels with 2500 frames. In case images are acquired with the full camera pixels (2048 * 2048) the images should be binned. Following is a brief description on how the images are processed.
+ 
 <ol>
-<li>Read data from .nxs, dark.nxs and STXM.hdf5 An example of the diffraction pattern without the background subtraction appears as the following:<br>
+<li>The raw diffraction pattern image without the background subtraction is shown below: <br>
 <img src="Diff_pattern_image.png" style="width:10%;height:10%;"><br>
 </li>
-<li>Average the dark image.The averaged dark image appears as the following<br>
+<li>To subract the background, the images is acquired without the X-rays. The averaged dark image appears as the following<br>
 <img src="dark.png" style="width:10%;height:10%;"><br>
 
 </li>
-<li>Subtract the data with dark image. Example of the image below:</li>
+<li> The background is then subtracted from the diffraction pattern image and from the histogram below, one can identify the changes in the intensity:</li>
 <img src="Background_subtraction.png" style="width:20%;height:20%;"><br>
-<li>Subtaract the remaining noise: this done by averaging 20 x 20 pixels on the bottom corner and put all the pixel value below this to zero.</li>
+<li>There are still some noises in the image, the region where there should be 0 intensity shows some value. To subtaract the remaining noise: we take a square with 20 x 20 pixels on the bottom corner, we then take the average value of the pixel from this region and then put all the pixel value below the average value to zero. For example if the average intensity value is 6 all other pixels with intensity 6 and below is made 0.This step is suggested by Kadda.</li>
 
-<li>Apply the necessary rotation and flipping of the image to match the coordinates of the pixellator and the detector <br> We follow: flip up down - rotate clockwise 90 degrees</li>
-
-<li> Extract STXM image for preliminary check</li>
-<li> Create the mask based on the diffraction pattern obtained. An example is shown below, for each file a new mask is generated and will be stored in the .cxi file.</li>
+<li>Apply the necessary rotation and flipping of the image to match the coordinates of the pixellator and the detector <br> We follow: flip up down - rotate clockwise 90 degrees in python code it is written as "np.flipud(np.rot90(data_Image_diff_pattern[i],3)"</li>
+<li> Extract STXM image for preliminary check done by averaging each image and combining them in the right order.</li>
+<li> Create the mask based on the diffraction pattern obtained. An example is shown below, for each file a new mask is generated and will be stored in the .cxi file. NOTE!!!! This step was adapted from SHAPR, and the mask image is not used for pynx reconstruction can be removed in the future. </li>
 <img src="mask_image1.png" style="width:10%;height:10%;"><br>
-
-<li> From the STXM .hdf5 file, extract x and y coordinates, energy, polarization, zoneplate and OSA values. NOTE: the X and Y data should ne such that the X values remain constant and Y increase in every line, pynx converges better this way reversing this results in poor covergence.</li>
+<li> From the STXM .hdf5 file, extract x and y coordinates, energy, polarization, zoneplate and OSA values. NOTE: the X and Y coordinates should be such that the X values remain constant and Y increase in every line, pynx converges better this way reversing this results in poor covergence. In case the result do not converge try changing the coordinates</li>
 <!--
 <li>Apply binning if needed</li>
 <li>Calculate the detector distance.</li>
@@ -141,7 +142,7 @@ Cleaning of the data and creating new cxi file. The data will not be binned for 
 -->
 
 <li>Create a new .cxi file with all the useful data. </li> </ol><br>
-The tree name/group and data sets have the save name in the cxi file. Parameters added (05.02.2020): <br>
+The tree name/group and data sets have the save name in the cxi file. Parameters added (03.06.2020): <br>
 <ul>
 
 <li> Miscellaneous </li>
@@ -151,6 +152,7 @@ The tree name/group and data sets have the save name in the cxi file. Parameters
    <li> Name of parent dark nxs file: siXX_XXX_dark_0001.nxs </li>
    <li> Name of parent nxs file: si107_XXX_0001.nxs </li>
    <li> OSA </li>
+    <li> Resolution/stepsize : this is the difference between the position x[1] and x[0].</li>
    </ol>
    <br>
 
@@ -175,6 +177,7 @@ can be added later??
     <li> Image_data (Processed data) </li>
     <li> probe_mask</li>
     <li> Polarization </li>
+     <li> bin </li>
     </ol>
     <br>
 
