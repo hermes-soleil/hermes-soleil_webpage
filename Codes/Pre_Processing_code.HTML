@@ -8,27 +8,35 @@ There are three main python codes which perform the pre processing for the pynx 
   <ol>
     <li> Very_Simple_preprocess_NXS.py - Will be often used</li>
     <li> Very_simple_preprocess_NXS_v1.py - Probably never be used</li>
-    <li> Select_nxs_files.py - Will be used when a large number of files need to be preprocessed for exmaple for ptycho spectra measurements<li>
+    <li> Select_nxs_files.py - Will be used when a large number of files need to be preprocessed for exmaple for ptycho spectra measurements</li>
   </ol>
 These scripts can be executed from a common bash file "bash_filie_preprocessing.sh" or through the GUI depending "GUI_ptycho_v2.py". The users can choose one of these two options depending on their needs or their level of comfort. <br>
-Pros and cons of GUI and bash file:<br>
+  <h3>Pros and cons of GUI and bash file</h3><br>
 GUI pros <br>
-  1. Easy to use<br>
-  2. Can create a list of files to be processed and let it run.<br>
-  3. Best option when you are pre-processing and/or reconstructing one file at a time.<br>
+  <ol>
+    <li>Easy to use</li>
+    <li>Can create a list of files to be processed and let it run.</li>
+    <li>Best option when you are pre-processing and/or reconstructing one file at a time.</li>
+  </ol>
 GUI cons as of 03.06.2020 <br>
-  1. reconstructing the file as soon as preprocessing is over is not possible yet, but there is a seperate GUI window where the reconstruction can be carried out.<br>
-  2. reconstructing list of files to be reconstructed is not implemented yet.<br>
-  3. Gets hanged till the processes are over<br>
-    
+  <ol>
+  <li>Reconstructing the file as soon as preprocessing is over is not possible yet, but there is a seperate GUI window where the reconstruction can be carried out.</li>
+  <li>reconstructing list of files to be reconstructed is not implemented yet.</li>
+  <li>Gets hanged till the processes are over</li>
+  </ol>
+   
 Bash file pros<br>
-  1. Easy to use.<br>
-  2. Can combine pre process and ptycho.<br>
-  3. Does not get struck, more robust.<br>
-  4. Can give in instructions to perform pynx reconstruction once the pre processing is over as well as define list of files to pre-process and reconstruct. <br>
-Bash file cons<br>
-  1. Should handle with care, make sure the syntax are maintained properly. <br>
-  2. Creating a list of files to be pre-processed or reconstructed can be messy but will work perfectly.<br>
+  <ol> 
+    <li>Easy to use.</li>
+    <li>Can combine pre process and ptycho.</li>
+    <li>Does not get struck, more robust.</li>
+  <li>Can give in instructions to perform pynx reconstruction once the pre processing is over as well as define list of files to pre-process and reconstruct. </li> 
+  </ol>
+    Bash file cons<br>
+  <ol>
+    <li>Should handle with care, make sure the syntax are maintained properly. </li>
+  <li>Creating a list of files to be pre-processed or reconstructed can be messy but will work perfectly.</li>
+    
       
 <b>STEP 1:</b> There are three files that are generated during the ptychography data acquisition, make sure you have all the three. All these files are stored in the same folder as defined by the user during the beamtime.
  <br>
