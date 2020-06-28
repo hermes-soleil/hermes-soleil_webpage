@@ -11,6 +11,29 @@ There are three main python codes which perform the pre processing for the pynx 
     <li> Select_nxs_files.py - Will be used when a large number of files need to be preprocessed for exmaple for ptycho spectra measurements</li>
   </ol>
 These scripts can be executed from a common bash file "bash_filie_preprocessing.sh" or through the GUI depending "GUI_ptycho_v2.py". The users can choose one of these two options depending on their needs or their level of comfort. <br>
+  
+ <b>STEP 1:</b> There are three files that are generated during the ptychography data acquisition, make sure you have all the three. All these files are stored in the same folder as defined by the user during the beamtime.
+ <br>
+<ol>
+<li> siNumber_date_000001.nxs - with images of all the diffraction pattern (indicated in figure 1, where the red boxes are the region in the sample where diffraction pattern is imaged in the camera </li>
+<li> siNumber_date_dark_000001.nxs - with images acquired without the X-rays </li>
+<li> Sample_Image_data_filename.hdf5 - contains the X and Y coordinates corresponding to the diffraction pattern.(refer figure 1)</li>
+</ol><br>
+<!--<img src="Image_1.png" style="width:10%;height:10%;"><br> -->
+
+<b> STEP 2: Configure the bash file/GUI and run the script</b><br>
+  <br>
+  
+The bash script has the necessary text and locations to put the necessary parameters, when entered appropriately there will be no errors. Please pay attention to the spaces!! <br>
+NOTE: You cannot separately do pynx reconstruction here, to carry out only the pynx reconstruction use the bash file : Ptycho_recon.sh located in the same directory.<br>
+    
+  <b>User manual bash file:</b>Can be found here <a href="User_Manual_bash_file.pdf"> Link </a> <br>
+  
+  <b>User manual GUI:</b>Can be found here <a href="User Manual.pdf">Link</a>
+  
+  
+  
+  
   <h3>Pros and cons of GUI and bash file</h3><br>
 GUI pros <br>
   <ol>
@@ -38,25 +61,7 @@ Bash file pros<br>
   <li>Creating a list of files to be pre-processed or reconstructed can be messy but will work perfectly.</li>
   </ol><br>
       
-<b>STEP 1:</b> There are three files that are generated during the ptychography data acquisition, make sure you have all the three. All these files are stored in the same folder as defined by the user during the beamtime.
- <br>
-<ol>
-<li> siNumber_date_000001.nxs - with images of all the diffraction pattern (indicated in figure 1, where the red boxes are the region in the sample where diffraction pattern is imaged in the camera </li>
-<li> siNumber_date_dark_000001.nxs - with images acquired without the X-rays </li>
-<li> Sample_Image_data_filename.hdf5 - contains the X and Y coordinates corresponding to the diffraction pattern.(refer figure 1)</li>
-</ol><br>
-<!--<img src="Image_1.png" style="width:10%;height:10%;"><br> -->
 
-<b> STEP 2: Configure the bash file/GUI and run the script</b><br>
-  <br>
-  
-The bash script has the necessary text and locations to put the necessary parameters, when entered appropriately there will be no errors. Please pay attention to the spaces!! <br>
-  
-The user manual for the pre-processing and reconstruction using the bash script can be found here <a href="User_Manual_bash_file.pdf"> Link </a> <br>
-  
-  NOTE: You cannot separately do pynx reconstruction here, to carry out only the pynx reconstruction use the bash file : Ptycho_recon.sh located in the same directory.<br>
-  
-  To use the GUI the user manual can be found here <a href="User Manual.pdf">Link</a>
   
 
   
