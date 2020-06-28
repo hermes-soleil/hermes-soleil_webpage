@@ -11,6 +11,7 @@ There are three main python codes which perform the pre processing for the pynx 
     <li> Select_nxs_files.py - Will be used when a large number of files need to be preprocessed for exmaple for ptycho spectra measurements</li>
   </ol>
 These scripts can be executed from a common bash file "bash_filie_preprocessing.sh" or through the GUI depending "GUI_ptycho_v2.py". The users can choose one of these two options depending on their needs or their level of comfort. <br>
+  <br>
   
  <b>STEP 1:</b> There are three files that are generated during the ptychography data acquisition, make sure you have all the three. All these files are stored in the same folder as defined by the user during the beamtime.
  <br>
@@ -31,8 +32,29 @@ NOTE: You cannot separately do pynx reconstruction here, to carry out only the p
   
   <b>User manual GUI:</b>Can be found here <a href="User Manual.pdf">Link</a>
   
+ <br>
   
+  <h3> Algorithm guide</h3><br>
+  There are three types of algorithm in Pynx. The different algorithms and some suggestions on its usage is described below:<br>
+  <ol>
+    <li> Differential mapping: Fast, do not converge or produce good image. Use this for a quick check or early convergence followed by AP or ML.</li>
+    <li> Alternative projection: Slow, produce sharp images, with few DM before the image can converge faster.</li>
+    <li> Maximum likelyhood: Similar to AP, can be used in last step, but usually DM and AP would suffice </li>
+  </ol>
   
+  Recommended algorithm sequence:<br>
+  <ol>
+    <li>DM**100,probe=1 - for quick check, probe=1 updates probe after each iteration, better keep it all the time</li>
+    <li>AP**1000,DM**100,probe=1 - for sharp images (increase AP more if needed)</li>
+    <li>AP**1000,probe=1 - just AP alone is enough for well defined structure such as siemens star.</li>
+  </ol>
+  Optional tags:<br>
+  <ol>
+    <li>obj_smooth=0.2</li>
+    <li>background=1</li>
+  </ol>
+  <br>
+    
   
   <h3>Pros and cons of GUI and bash file</h3><br>
 GUI pros <br>
